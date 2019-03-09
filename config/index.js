@@ -10,7 +10,56 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/shopping': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/ugc': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/v1': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/v2': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/v3': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/v4': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/bos': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/member': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/promotion': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/eus': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/payapi': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/img': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -20,25 +69,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    // 代理
-    proxyTable: {
-      context: [ //代理路径
-        '/shopping',
-        '/ugc',
-        '/v1',
-        '/v2',
-        '/v3',
-        '/v4',
-        '/bos',
-        '/member',
-        '/promotion',
-        '/eus',
-        '/payapi',
-        '/img',
-      ],
-      target: 'http://cangdu.org:8001',
-      changeOrigin: true
-    },
+
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
