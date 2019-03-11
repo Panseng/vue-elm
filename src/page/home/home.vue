@@ -38,8 +38,8 @@
         </li>
       </ul>
     </section>
-
-    <section class="jump-alphabet">
+    <!-- alphabet navigation -->
+    <section class="jump_alphabet">
       <ul class="alphalistul">
         <li>
           <a href="#top">^</a>
@@ -198,7 +198,7 @@ export default {
     }
   }
 }
-.jump-alphabet{
+.jump_alphabet{
   position: fixed;
   right: 1rem;
   top: 0;

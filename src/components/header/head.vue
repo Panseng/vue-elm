@@ -24,12 +24,31 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
 export default {
+  data () {
+    return {
+    }
+  },
+  mounted () {
+    this.getUserInfo()
+  },
   props: [
     'signinUp',
     'headTitle',
     'goBack'
-  ]
+  ],
+  computed: {
+    ...mapState([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getUserInfo'
+    ])
+
+  }
 }
 </script>
 

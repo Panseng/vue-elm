@@ -1,0 +1,177 @@
+<template>
+  <div class="city_container">
+    <head-top :head-title="cityname" go-back="true">
+      <router-link to="/home" slot="changecity" class="change_city">切换城市</router-link>
+    </head-top>
+    <form class="city_form" v-on:submit.prevent>
+      <div>
+        <input type="search" name="city" placeholder="输入地址(学校、办公楼、地址)" class="city_input input_style" required v-model="inputValue">
+      </div>
+      <div>
+        <input type="submit" name="submit" class="city_submit input_style" @click="postpois" value="提交">
+      </div>
+    </form>
+    <header v-if="historytitle" class="pois_search_history">搜索历史</header>
+    <ul class="getpois_ul">
+      <li v-for="(item, index) in placelist" @click="nextpage(index, item.geohash)" :key="index">
+        <h4 class="pois_name ellipsis">{{ item.name }}</h4>
+        <p class="pois_address ellipsis">{{ item.address }}</p>
+      </li>
+    </ul>
+    <footer v-if="historytitle&&placelist.length" class="clear_all_history" @click="clearAll">清空所有</footer>
+    <div v-if="placeNone" class="search_none_place">抱歉！无搜索结果</div>
+  </div>
+</template>
+
+<script>
+import headTop from '@/components/header/head'
+import { currentcity, searchplace } from '@/service/getData'
+import { getStore, setStore, removeStore } from '@/config/mUtils'
+
+export default {
+  data () {
+    return {
+      inputValue: '',
+      cityid: '',
+      cityname: '',
+      placelist: [],
+      placeHistory: [],
+      historytitle: true, // 默认显示搜索历史头部，点击搜索后隐藏
+      placeNone: false // 搜索无结果，显示提示信息
+    }
+  },
+  mounted () {
+    this.cityid = this.$route.params.cityid
+
+    // 获取当前城市名称
+    currentcity(this.cityid).then(res => {
+      this.cityname = res.name
+    })
+    this.initData()
+  },
+  components: {
+    headTop
+  },
+  methods: {
+    initData () {
+      if (getStore('placeHistory')) {
+        this.placelist = JSON.parse(getStore('placeHistory'))
+      } else {
+        this.placelist = []
+      }
+    },
+    // 发生搜索信息
+    postpois () {
+      if (this.inputValue) {
+        searchplace(this.cityid, this.inputValue).then(res => {
+          this.historytitle = false
+          this.placelist = res
+          this.placeNone = !res.length
+        })
+      }
+    },
+
+    // 判断是否需要新增历史记录
+    nextpage (index, geohash) {
+      let history = getStore('placeHistory')
+      let choosePlace = this.placelist[index]
+      if (history) {
+        let checkrepeat = false
+        this.placeHistory = JSON.parse(history)
+        this.placeHistory.forEach(item => {
+          // eslint-disable-next-line eqeqeq
+          if (item.geohash == geohash) {
+            checkrepeat = true
+          }
+        })
+        if (!checkrepeat) {
+          this.placeHistory.push(choosePlace)
+        }
+      } else {
+        this.placeHistory.push(choosePlace)
+      }
+      setStore('placeHistory', this.palceHistory)
+      this.$router.push({ path: '/msite', query: {geohash} })
+    },
+    clearAll () {
+      removeStore('placeHistory')
+      this.initData()
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../../style/mixin';
+
+.city_container{
+  padding-top: 2.35rem;
+}
+.change_city{
+  right: .4rem;
+  @include sc(.6rem, #fff);
+  @include ct;
+}
+.city_form{
+  background-color: #fff;
+  border-top: 1px solid $bc;
+  border-bottom: 1px solid $bc;
+  padding-top: .4rem;
+  div{
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    .input_style{
+      border-radius: .1rem;
+      margin-bottom: .4rem;
+      @include wh(100%, 1.4rem);
+    }
+    .city_input{
+      border: 1px solid $bc;
+      padding: 0 .3rem;
+      @include sc(.65rem, #333);
+    }
+    .city_submit{
+      background-color: $blue;
+      @include sc(.65rem, #fff);
+    }
+  }
+}
+.pois_search_history{
+  border-top: 1px solid $bc;
+  border-bottom: 1px solid $bc;
+  padding-left: .5rem;
+  @include font(.475rem, .8rem);
+}
+.getpois_ul{
+  background-color: #fff;
+  li{
+    margin:0 auto;
+    padding-top: .65rem;
+    border-bottom: 1px solid $bc;
+    .pois_name{
+      margin: 0 auto .35rem;
+      width: 90%;
+      @include sc(.65rem, #333);
+    }
+    .pois_address{
+      margin: 0 auto .35rem;
+      width: 90%;
+      @include sc(.45rem, #999);
+    }
+  }
+}
+.search_none_place{
+  margin: 0 auto;
+  @include font(.65rem, 1.75rem);
+  color:#333;
+  background-color: #fff;
+  text-indent: .5rem;
+}
+.clear_all_history{
+  @include sc(.7rem, #666);
+  text-align: center;
+  line-height: 2rem;
+  background-color: #fff;
+}
+</style>

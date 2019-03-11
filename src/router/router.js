@@ -6,7 +6,7 @@ import App from '../App'
 Vue.use(Router)
 
 const home = r => require.ensure([], () => r(require('@/page/home/home')), 'home')
-
+const city = r => require.ensure([], () => r(require('@/page/city/city')), 'city')
 export const constantRouteMap = [{
   path: '/',
   component: App,
@@ -18,6 +18,10 @@ export const constantRouteMap = [{
     {
       path: '/home',
       component: home
+    },
+    {
+      path: 'city/:cityid',
+      component: city
     }
   ]
 
