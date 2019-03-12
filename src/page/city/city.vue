@@ -60,7 +60,7 @@ export default {
         this.placelist = []
       }
     },
-    // 发生搜索信息
+    // 发送搜索信息
     postpois () {
       if (this.inputValue) {
         searchplace(this.cityid, this.inputValue).then(res => {
