@@ -59,7 +59,7 @@
     </aside>
     <div ref="abc" style="background-color: red;"></div>
     <transition name="loading">
-      <loading v-show="showLoading"></loading>
+      <loading v-show="showLoading" :animate-bool="showLoading"></loading>
     </transition>
   </div>
 </template>
