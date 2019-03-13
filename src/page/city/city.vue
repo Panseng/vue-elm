@@ -5,20 +5,41 @@
     </head-top>
     <form class="city_form" v-on:submit.prevent>
       <div>
-        <input type="search" name="city" placeholder="输入地址(学校、办公楼、地址)" class="city_input input_style" required v-model="inputValue">
+        <input
+          type="search"
+          name="city"
+          placeholder="输入地址(学校、办公楼、地址)"
+          class="city_input input_style"
+          required v-model="inputValue"
+        >
       </div>
       <div>
-        <input type="submit" name="submit" class="city_submit input_style" @click="postpois" value="提交">
+        <input
+          type="submit"
+          name="submit"
+          class="city_submit
+          input_style"
+          @click="postpois"
+          value="提交"
+        >
       </div>
     </form>
     <header v-if="historytitle" class="pois_search_history">搜索历史</header>
     <ul class="getpois_ul">
-      <li v-for="(item, index) in placelist" @click="nextpage(index, item.geohash)" :key="index">
+      <li
+        v-for="(item, index) in placelist"
+        @click="nextpage(index, item.geohash)"
+        :key="index"
+      >
         <h4 class="pois_name ellipsis">{{ item.name }}</h4>
         <p class="pois_address ellipsis">{{ item.address }}</p>
       </li>
     </ul>
-    <footer v-if="historytitle&&placelist.length" class="clear_all_history" @click="clearAll">清空所有</footer>
+    <footer
+      v-if="historytitle&&placelist.length"
+      class="clear_all_history"
+      @click="clearAll"
+    >清空所有</footer>
     <div v-if="placeNone" class="search_none_place">抱歉！无搜索结果</div>
   </div>
 </template>
