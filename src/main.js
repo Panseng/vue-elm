@@ -2,10 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 import router from './router/router'
 import store from './store'
 import './config/rem'
 import FastClick from 'fastclick'
+
+import 'swiper/dist/css/swiper.css'
+
+Vue.use(VueAwesomeSwiper)
 
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {

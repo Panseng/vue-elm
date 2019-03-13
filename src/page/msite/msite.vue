@@ -1,7 +1,7 @@
 <template>
   <div>
     <head-top signin-up='msite'>
-      <router-link to="/search/geohash" class="link-search" slot="search">
+      <router-link to="/search/geohash" class="link_search" slot="search">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <circle cx="8" cy="8" r="7" stroke="rgb(255,255,255)" stroke-width="1" fill="none"/>
           <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
@@ -13,19 +13,25 @@
     </head-top>
 
     <nav class="msite_nav">
-      <div class="swiper-container" v-if="foodTypes.length">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide food_type_container" v-for="(item, index) in foodTypes" :key="index">
-            <router-link :to="{path: '/food', query: { geohash, title: foodItem.title, restaurant_category_id: getCategoryId(foodItem.link)}}" v-for="foodItem in item" :key="foodItem.id" class="link_to_food">
+      <swiper :options="swiperOption" v-if="foodTypes.length">
+        <swiper-slide class="food_type_container" v-for="(item, index) in foodTypes" :key="index">
+          <router-link
+            :to="{path: '/food',
+              query: {
+                geohash,
+                title: foodItem.title,
+                restaurant_category_id: getCategoryId(foodItem.link)}}"
+            v-for="foodItem in item"
+            :key="foodItem.id"
+            class="link_to_food">
               <figure>
                 <img :src="imgBaseUrl+foodItem.image_url">
                 <figcaption>{{ foodItem.title }}</figcaption>
               </figure>
             </router-link>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
       <img src="../../images/fl.svg" class="fl_back animation_opacity" v-else>
     </nav>
 
@@ -48,8 +54,6 @@ import headTop from '@/components/header/head'
 import footGuide from '@/components/footer/footGuide'
 import shopList from '@/components/common/shoplist'
 import { msiteAddress, msiteFoodTypes, cityGuess } from '@/service/getData'
-import '@/plugins/swiper.min.js'
-import '@/style/swiper.min.css'
 
 export default {
   data () {
@@ -58,13 +62,19 @@ export default {
       msiteTitle: '请选择地址...',
       foodTypes: [],
       hasGetData: false,
-      imgBaseUrl: 'https://fuss10.elemecdn.com'
+      imgBaseUrl: 'https://fuss10.elemecdn.com',
+      swiperOption: {
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      }
     }
   },
   async beforeMount () {
     if (!this.$route.query.geohash) {
       const address = await cityGuess()
-      this.geohash = address.latitude + ',' + address.longtitude
+      this.geohash = address.latitude + ',' + address.longitude
     } else {
       this.geohash = this.$route.query.geohash
     }
@@ -73,6 +83,7 @@ export default {
     // 获取位置信息
     let res = await msiteAddress(this.geohash)
     this.msiteTitle = res.name
+    this.RECORD_ADDRESS(res)
     this.hasGetData = true
   },
 
@@ -86,14 +97,6 @@ export default {
         foodArr[j] = resArr.splice(0, 8)
       }
       this.foodTypes = foodArr
-    }).then(() => {
-      // 初始化swiper
-      /* eslint-disable no-new */
-      // eslint-disable-next-line no-undef
-      new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        loop: true
-      })
     })
   },
 
@@ -111,7 +114,7 @@ export default {
 
     // 解码url地址，求去restaurant_category_id值
     getCategoryId (url) {
-      let urlData = decodeURIComponent(url.split('=')[1].replace('$target_name', ''))
+      let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
       if (/restaurant_category_id/gi.test(urlData)) {
         return JSON.parse(urlData).restaurant_category_id.id
       } else {
@@ -142,11 +145,12 @@ export default {
     display: block;
   }
 }
-.msite_nav{
+nav.msite_nav{
   padding-top: 2.1rem;
   background-color: #fff;
   border-bottom: .025rem solid $bc;
   height: 10.6rem;
+  overflow: hidden;
   .swiper-container{
     @include wh(100%, auto);
     padding-bottom:.6rem;
@@ -158,7 +162,7 @@ export default {
     @include wh(100%, 100%);
   }
 }
-.food_types_container{
+.swiper-slide{
   display:flex;
   flex-wrap: wrap;
   .link_to_food{

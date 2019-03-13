@@ -38,10 +38,10 @@ export default {
   // 记录当前经纬度
   [RECORD_ADDRESS] (state, {
     latitude,
-    longtitude
+    longitude
   }) {
     state.latitude = latitude
-    state.longtitude = longtitude
+    state.longitude = longitude
   },
 
   // 商建详情

@@ -70,6 +70,7 @@ export default {
   margin-left: .4rem;
 }
 .head_login{
+  margin-top: .1rem;
   right: .55rem;
   @include sc(0.65rem, #fff);
   @include ct;

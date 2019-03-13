@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     initData () {
-      if (getStore('placeHistory')) {
+      if (getStore('placeHistory') !== 'undefined') {
         this.placelist = JSON.parse(getStore('placeHistory'))
       } else {
         this.placelist = []
@@ -75,12 +75,11 @@ export default {
     nextpage (index, geohash) {
       let history = getStore('placeHistory')
       let choosePlace = this.placelist[index]
-      if (history) {
+      if (history !== 'undefined') {
         let checkrepeat = false
         this.placeHistory = JSON.parse(history)
         this.placeHistory.forEach(item => {
-          // eslint-disable-next-line eqeqeq
-          if (item.geohash == geohash) {
+          if (item.geohash === geohash) {
             checkrepeat = true
           }
         })
