@@ -8,6 +8,7 @@ Vue.use(Router)
 const home = r => require.ensure([], () => r(require('@/page/home/home')), 'home')
 const city = r => require.ensure([], () => r(require('@/page/city/city')), 'city')
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite')), 'msite')
+const search = r => require.ensure([], () => r(require('@/page/search/search')), 'search')
 
 export const constantRouteMap = [
   {
@@ -30,6 +31,10 @@ export const constantRouteMap = [
         path: '/msite',
         component: msite,
         meta: {keepAlive: true}
+      },
+      {
+        path: '/search/:geohash',
+        component: search
       }
     ]
   },

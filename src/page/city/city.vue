@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     initData () {
-      if (getStore('placeHistory') !== 'undefined') {
+      if (getStore('placeHistory')) {
         this.placelist = JSON.parse(getStore('placeHistory'))
       } else {
         this.placelist = []
@@ -96,7 +96,7 @@ export default {
     nextpage (index, geohash) {
       let history = getStore('placeHistory')
       let choosePlace = this.placelist[index]
-      if (history !== 'undefined') {
+      if (history) {
         let checkrepeat = false
         this.placeHistory = JSON.parse(history)
         this.placeHistory.forEach(item => {
@@ -110,7 +110,7 @@ export default {
       } else {
         this.placeHistory.push(choosePlace)
       }
-      setStore('placeHistory', this.palceHistory)
+      setStore('placeHistory', this.placeHistory)
       this.$router.push({ path: '/msite', query: {geohash} })
     },
     clearAll () {
