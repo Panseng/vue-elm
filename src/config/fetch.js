@@ -31,7 +31,7 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
 
     // 将序列化data数据添加到body中
     if (type == 'POST') {
-      Object.defineProperties(requestConfig, 'body', {
+      Object.defineProperty(requestConfig, 'body', {
         value: JSON.stringify(data)
       })
     }
