@@ -16,24 +16,6 @@ export default {
       timer: null
     }
   },
-  props: [ 'animateBool' ],
-  watch: {
-    animateBool: {
-      handler: function (val, oldval) {
-        if (!val) {
-          this.$nextTick(() => {
-            clearInterval(this.timer)
-          })
-        } else {
-          this.$nextTick(() => {
-            this.timer = setInterval(() => {
-              this.positionY++
-            }, 600)
-          })
-        }
-      }
-    }
-  },
   mounted () {
     this.timer = setInterval(() => {
       this.positionY++
