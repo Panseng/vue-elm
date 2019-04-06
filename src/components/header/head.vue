@@ -19,6 +19,7 @@
     <slot name="edit"></slot>
     <slot name="msite-title"></slot>
     <slot name="changecity"></slot>
+    <slot name="changeLogin"></slot>
   </header>
 </template>
 

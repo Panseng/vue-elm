@@ -9,11 +9,6 @@ const home = r => require.ensure([], () => r(require('@/page/home/home')), 'home
 const city = r => require.ensure([], () => r(require('@/page/city/city')), 'city')
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite')), 'msite')
 const search = r => require.ensure([], () => r(require('@/page/search/search')), 'search')
-const order = r => require.ensure([], () => r(require('@/page/order/order')), 'order')
-const profile = r => require.ensure([], () => r(require('@/page/profile/profile')), 'profile')
-const login = r => require.ensure([], () => r(require('@/page/login/login')), 'login')
-const errorPage = r => require.ensure([], () => r(require('@/page/404')), 'errorPage')
-const info = r => require.ensure([], () => r(require('@/page/profile/children/info')), 'info')
 
 export const constantRouteMap = [
   {
@@ -38,32 +33,12 @@ export const constantRouteMap = [
         meta: {keepAlive: true}
       },
       {
-        path: '/order',
-        component: order
-      },
-      {
-        path: '/profile',
-        component: profile,
-        children: [{
-          path: 'info',
-          component: info
-        }]
-      },
-      {
         path: '/search/:geohash',
         component: search
-      },
-      {
-        path: '/login',
-        component: login
-      },
-      {
-        path: '/404',
-        component: errorPage
       }
     ]
   },
-  {path: '*', redirect: '/404'}
+  {path: '*', redirect: '/'}
 ]
 
 export default new Router({
